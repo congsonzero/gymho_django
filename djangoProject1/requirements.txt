@@ -1,0 +1,6 @@
+Django==3.0 --user
+djangorestframework
+django-cors-headers
+sql_server.pyodbc
+django-pyodbc-azure-2019
+virtualenv
