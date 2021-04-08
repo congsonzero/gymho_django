@@ -1,10 +1,10 @@
 from rest_framework import serializers
-from gymho.models import Execise
+from gymho.models import Exercise
 
 
-class ExeciseSerializer(serializers.ModelSerializer):
+class ExerciseSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Execise
+        model = Exercise
         fields = ('ExeciseID',
                   'name',
                   'rep_recommend',

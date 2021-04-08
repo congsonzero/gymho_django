@@ -1,2 +1,0 @@
-# gymho_django
-hello
