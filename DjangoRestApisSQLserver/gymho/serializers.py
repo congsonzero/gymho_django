@@ -1,5 +1,8 @@
 from rest_framework import serializers
-from gymho.models import Exercise
+
+# from gymho import models
+from gymho import models
+from gymho.models import Exercise, Customer, Login
 
 
 class ExerciseSerializer(serializers.ModelSerializer):
@@ -9,3 +12,34 @@ class ExerciseSerializer(serializers.ModelSerializer):
                   'name',
                   'rep_recommend',
                   'Activate')
+
+
+class CustomerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Customer
+        fields = ('UserID',
+                  'name',
+                  'address',
+                  'age',
+                  'weight',
+                  'height',
+                  # 'ExerciseProgram',
+                  'Login')
+
+
+class LoginSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Login
+        fields = ('username', 'password', 'email')
+        extra_kwargs = {'password': {'write_only': True}}
+
+        @staticmethod
+        def create(self, validated_data):
+            user = models.Login(
+                email=validated_data['email'],
+                username=validated_data['username']
+            )
+            user.set_password(validated_data['password'])
+            user.save()
+
+            return user
