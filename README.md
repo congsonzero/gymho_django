@@ -6,7 +6,7 @@
 
 # Once you’ve created a virtual environment, you may activate it.
 
-    .\env-env\Scripts\Activate.ps1
+    .\venv-env\Scripts\Activate.ps1
     
 ## Install requirement.txt
      
