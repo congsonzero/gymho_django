@@ -19,12 +19,12 @@ class Login(AbstractUser):
     last_login = None
     date_joined = None
     is_active = True
-    is_staff = None
-    is_superuser = True
+    is_superuser = None
     Login_id = models.AutoField(primary_key=True)
     username = models.CharField(max_length=15)
     password = models.CharField(max_length=16)
     email = models.CharField(max_length=320, unique=True)
+    is_staff = models.BooleanField(db_column='admin')
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username', 'password']
 

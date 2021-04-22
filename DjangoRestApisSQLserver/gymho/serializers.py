@@ -1,6 +1,4 @@
 from rest_framework import serializers
-
-# from gymho import models
 from gymho import models
 from gymho.models import Exercise, Customer, Login
 
@@ -30,7 +28,7 @@ class CustomerSerializer(serializers.ModelSerializer):
 class LoginSerializer(serializers.ModelSerializer):
     class Meta:
         model = Login
-        fields = ('username', 'password', 'email')
+        fields = ('username', 'password', 'email', 'is_staff')
         extra_kwargs = {'password': {'write_only': True}}
 
         @staticmethod

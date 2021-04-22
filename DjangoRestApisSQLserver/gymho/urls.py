@@ -11,5 +11,5 @@ urlpatterns = [
     url('api/login$', jwt_views.TokenObtainPairView.as_view(), name='login'),
     url('api/register$', UserRegisterView.as_view(), name='register'),
     url('api/customer$', CustomerView.as_view(), name='customer'),
-\
+
 ]

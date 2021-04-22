@@ -6,7 +6,7 @@ from rest_framework.decorators import api_view
 from rest_framework.parsers import JSONParser
 from rest_framework import status
 # from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.views import APIView
 
 from gymho.models import Exercise, Customer
@@ -90,15 +90,10 @@ class UserRegisterView(APIView):
 
             return JsonResponse(login_serializer.data, status=status.HTTP_201_CREATED)
 
-        else:
-            return JsonResponse({
-                'error_message': 'This name has already exist!',
-                'errors_code': 400,
-            }, status=status.HTTP_400_BAD_REQUEST)
-
+        return JsonResponse(login_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class CustomerView(APIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAdminUser,)
 
     @staticmethod
     def get(request):
