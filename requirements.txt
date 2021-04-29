@@ -1,3 +1,6 @@
-tox>=2.7.0
-logzero  # see github.com/metachris/logzero
-GitPython
+Django==2.1
+djangorestframework==3.11.0
+pyodbc==4.0.30
+django-pyodbc-azure-2019==2.1.0.0
+virtualenv
+djangorestframework-simplejwt==4.6.0
