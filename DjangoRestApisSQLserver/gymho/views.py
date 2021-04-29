@@ -1,7 +1,7 @@
 # Create your views here.
 # from django.shortcuts import render
 from django.contrib.auth.hashers import make_password
-from django.http.response import JsonResponse
+from django.http.response import JsonResponse, Http404
 from rest_framework.decorators import api_view
 from rest_framework.parsers import JSONParser
 from rest_framework import status
@@ -9,8 +9,12 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.views import APIView
 
-from gymho.models import Exercise, Customer
-from gymho.serializers import ExerciseSerializer, LoginSerializer, CustomerSerializer
+from gymho.models import Exercise, Customer, Login, Todo
+from gymho.serializers import ExerciseSerializer, LoginSerializer, CustomerSerializer, TodoSerializer
+
+
+# from gymho.permission import Userpermissions
+
 
 @api_view(['GET', 'POST', 'DELETE'])
 class ExerciselistView(APIView):
@@ -79,6 +83,7 @@ def exercise_list_published(request):
 
 
 class UserRegisterView(APIView):
+
     @staticmethod
     def post(request):
         # login = LoginSerializer(data=request.data)
@@ -91,6 +96,24 @@ class UserRegisterView(APIView):
             return JsonResponse(login_serializer.data, status=status.HTTP_201_CREATED)
 
         return JsonResponse(login_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get_object(self, pk):
+        try:
+            return Login.objects.get(pk=pk)
+        except Login.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk):
+        if request.user.Login_id != int(pk):
+            return JsonResponse({'message': 'error'}, status=status.HTTP_400_BAD_REQUEST)
+        login = self.get_object(pk)
+        serializer = LoginSerializer(login)
+        return JsonResponse(serializer.data)
+
 
 class CustomerView(APIView):
     permission_classes = (IsAdminUser,)
@@ -119,3 +142,31 @@ class CustomerView(APIView):
 
         return JsonResponse(customer_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+class UserLoginView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get_object(self, pk):
+        try:
+            return Customer.objects.get(Login_id=pk)
+        except Customer.DoesNotExist:
+            raise Http404
+
+    def CustomerID(self, request, pk):
+        if request.user.Login_id != int(pk):
+            return JsonResponse({'message': 'error'}, status=status.HTTP_400_BAD_REQUEST)
+        customer = self.get_object(pk)
+        return customer.User_id
+
+    def get(self,request,pk):
+        userid=self.CustomerID(request,pk)
+        # customer = self.get_object(pk)
+        customer = Customer.objects.all().filter(age=18)
+        # print(customer[0])
+        #
+        # serializer = CustomerSerializer(customer[0])
+        # print(serializer)
+        todo = Todo.objects.raw('select * from Todo where UserID=8 go')
+        print(todo)
+        serializer = TodoSerializer(todo)
+        return JsonResponse(serializer.data, safe=False)

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from gymho import models
-from gymho.models import Exercise, Customer, Login
+from gymho.models import Exercise, Customer, Login, Todo
 
 
 class ExerciseSerializer(serializers.ModelSerializer):
@@ -15,14 +15,15 @@ class ExerciseSerializer(serializers.ModelSerializer):
 class CustomerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Customer
-        fields = ('UserID',
+        fields = ('User_id',
                   'name',
                   'address',
                   'age',
                   'weight',
                   'height',
                   # 'ExerciseProgram',
-                  'Login')
+                  'Login',
+                  )
 
 
 class LoginSerializer(serializers.ModelSerializer):
@@ -41,3 +42,9 @@ class LoginSerializer(serializers.ModelSerializer):
             user.save()
 
             return user
+
+
+class TodoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Todo
+        fields = ('TodoID', 'User',)

@@ -46,7 +46,7 @@ class ExerciseProgram(models.Model):
 
 
 class Customer(models.Model):
-    UserID = models.AutoField(primary_key=True)
+    User_id = models.AutoField(primary_key=True, db_column='UserID')
     name = models.CharField(max_length=50)
     address = models.CharField(max_length=128)
     age = models.IntegerField()
@@ -60,3 +60,12 @@ class Customer(models.Model):
     class Meta:
         managed = False
         db_table = 'customer'
+
+
+class Todo(models.Model):
+    TodoID = models.IntegerField(primary_key=True, db_column='TodoID')
+    User = models.ForeignKey(Customer, db_column='UserID', on_delete=models.CASCADE)
+
+    class Meta:
+        managed = False
+        db_table = 'Todo'
